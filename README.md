@@ -4,7 +4,8 @@ This repository contains my solution my solution (1st place, solo gold medal) fo
 # The steps to reproduce my solution  
 ## 1. Creating the datasets
 ### For the low-resolution dataset:
-1.1. Download the data: see [here](https://www.kaggle.com/code/shlomoron/leap-download-data-1) a notebook that download 1/32 of the data. This need to be repeated 32 times by changing the index from 0 to any integer up to 31 in this line:  
+#### 1.1. Download the data:
+See [here](https://www.kaggle.com/code/shlomoron/leap-download-data-1) a notebook that download 1/32 of the data. This need to be repeated 32 times by changing the index from 0 to any integer up to 31 in this line:  
 'files = [all_files[i] for i in range(0, len(all_files), 32)]'  
 For example, for index=5 this line will read:  
 'files = [all_files[i] for i in range(5, len(all_files), 32)]'  
