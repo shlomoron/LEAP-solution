@@ -1,5 +1,5 @@
 # LEAP-solution
-This repository contains my solution my solution (1st place, solo gold medal) for the Kaggle competition of [LEAP (ClimSim)](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim).  
+This repository contains my solution (1st place, solo gold medal) for the Kaggle competition of [LEAP (ClimSim)](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim).  
 
 # The steps to reproduce my solution  
 ## 1. Creating the datasets
