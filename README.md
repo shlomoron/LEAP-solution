@@ -18,7 +18,7 @@ I created each dataset from 4 notebooks for eight datasets in total. See dataset
 ### For the high-resolution dataset:  
 When I created the high-res dataset, I already had experience with the low-res one, so bullets 1.1-1.3 are combined into a single notebook. Here, too, I give a copy, not the original one, for the same reason I mentioned in 1.3. See the notebook [here](https://www.kaggle.com/code/shlomoron/leap-download-data-1-xx-public). I run 44 copies of this notebook, with notebook_id between 1 to 44. Each notebook downloads 5[batches]\*100[grids]\*21600[atmospheric columns] for a total of 10,800,000 samples per notebook, resulting in a dataset of \~60GB in size per notebook (and \~60*44~2.6TB in total. I wanted to download more but started to get afraid that the Kaggle system would decide that I was a bot and ban me, lol. Also, each high-res model I train uses approximately only 1TB or so of this data, so it's enough for the number of models I trained). See the first dataset [here](https://www.kaggle.com/datasets/shlomoron/leap-tfrecs-1-xx).  
 ## 2. Create auxiliary data sets  
-There are several datasets that I need for training.  
+There are several additional datasets that I need for training.  
 #### 2.1. Grid metadata.  
 This is for latitude/longitude data of the grid indices since I use lat/lon as auxiliary loss. See notebook [here](https://www.kaggle.com/code/shlomoron/leap-grid) and dataset [here](https://www.kaggle.com/datasets/shlomoron/leap-gdata-ds).  
 #### 2.2. Mean, std, and min/max of all columns in Kaggle train and test set.  
