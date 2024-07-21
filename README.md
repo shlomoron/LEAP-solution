@@ -61,7 +61,6 @@ LR_SCHEDULE = [lrfn(step, num_warmup_steps=N_WARMUP_EPOCHS, lr_max=LR_MAX, num_c
 to:  
 LR_SCHEDULE = [lrfn(step, num_warmup_steps=N_WARMUP_EPOCHS, lr_max=LR_MAX, num_cycles=0.50, num_training_steps = N_EPOCHS)
  for step in range(10, N_EPOCHS)]  
- 
 For epoch 2, range(20, N_EPOCHS) for epoch 3 etc.  
 
 4. In block 37, load the last part checkpoints by:  
