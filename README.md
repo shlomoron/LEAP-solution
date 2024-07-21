@@ -38,4 +38,42 @@ As an example, I trained (after the competition ended and I cleaned my code) a l
 [Training part 4](https://www.kaggle.com/code/shlomoron/leap-training-4)  
 [Inference](https://www.kaggle.com/code/shlomoron/leap-training-4-inference)  
 [Submit](https://www.kaggle.com/code/shlomoron/leap-training-4-submit)  
+Note: training 2/3/4 are copies of training 1 with the following changes:  
+1.  In block 16, instead of generating a random scrambling rand_seed for the high-res dataset, I change it to the seed generated in training 1. From:  
 
+rand_seed = np.random.randint(10000)  
+
+to:  
+
+'''  
+rand_seed = np.random.randint(10000)  
+print(rand_seed)  
+'''  
+rand_seed = 2336  
+
+2. In block 17, the running index start from the current_epoch-1, in order to load new high-res data. From:
+
+for i in range(11):  
+
+to:  
+
+for i in range(1, 11):  
+
+for epoch 2, range(2, 11) for epoch 3 etc.
+
+3. In block 32, LR_SCHEDULE start from (current_epoch-1)*10 (since each epoch is divided to ten dub-epochs in the training). From:
+
+LR_SCHEDULE = [lrfn(step, num_warmup_steps=N_WARMUP_EPOCHS, lr_max=LR_MAX, num_cycles=0.50, num_training_steps = N_EPOCHS)
+ for step in range(N_EPOCHS)]  
+
+to:  
+
+LR_SCHEDULE = [lrfn(step, num_warmup_steps=N_WARMUP_EPOCHS, lr_max=LR_MAX, num_cycles=0.50, num_training_steps = N_EPOCHS)
+ for step in range(10, N_EPOCHS)]  
+
+For epoch 2, range(20, N_EPOCHS) for epoch 3 etc.  
+
+4. In block 37, load the last part checkpoints by:
+
+  checkpoint_old = tf.train.Checkpoint(model=model,optimizer=optimizer)
+  checkpoint_old.restore('/kaggle/input/leap-training-1/ckpt_folder/ckpt-1')
