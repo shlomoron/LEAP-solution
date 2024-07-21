@@ -49,7 +49,7 @@ print(rand_seed)
 '''  
 rand_seed = 2336  
 
-2. In block 17, the running index start from the current_epoch-1, in order to load new high-res data. From:
+2. In block 17, the running index start from the current_epoch-1, in order to load new high-res data. From:  
 for i in range(11):  
 to:  
 for i in range(1, 11):  
