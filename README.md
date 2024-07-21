@@ -110,5 +110,6 @@ The [3rd place solution in Ribonanza](https://www.kaggle.com/competitions/stanfo
 #### 1.3.4 Masked loss  
 I masked out the targets that are zeroed in the submission of those for which we use the ptend trick (ptend_q0002_2-ptend_q0002_26).  
 For those new at LEAP- please read [this post](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484) for ptend trick context.  
-Final thoughs on the loss function: well, it is probably the most important part of a deep learning model. lol.
+
+Final thoughs on the loss function: well, it is probably the most important part of a deep learning model. lol.  
 
