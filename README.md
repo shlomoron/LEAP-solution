@@ -38,6 +38,7 @@ As an example, I trained (after the competition ended and I cleaned my code) a l
 [Training part 4](https://www.kaggle.com/code/shlomoron/leap-training-4)  
 [Inference](https://www.kaggle.com/code/shlomoron/leap-training-4-inference)  
 [Submit](https://www.kaggle.com/code/shlomoron/leap-training-4-submit)  
+
 Note: training 2/3/4 are copies of training 1 with the following changes:  
 1.  In block 16, instead of generating a random scrambling rand_seed for the high-res dataset, I change it to the seed generated in training 1. From:  
 rand_seed = np.random.randint(10000)  
