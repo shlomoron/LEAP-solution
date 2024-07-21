@@ -42,7 +42,6 @@ Note: training 2/3/4 are copies of training 1 with the following changes:
 1.  In block 16, instead of generating a random scrambling rand_seed for the high-res dataset, I change it to the seed generated in training 1. From:  
 rand_seed = np.random.randint(10000)  
 to:  
-
 '''  
 rand_seed = np.random.randint(10000)  
 print(rand_seed)  
@@ -53,7 +52,7 @@ rand_seed = 2336
 for i in range(11):  
 to:  
 for i in range(1, 11):  
-for epoch 2, range(2, 11) for epoch 3 etc.
+for epoch 2, range(2, 11) for epoch 3 etc.  
 
 3. In block 32, LR_SCHEDULE start from (current_epoch-1)*10 (since each epoch is divided to ten dub-epochs in the training). From:
 LR_SCHEDULE = [lrfn(step, num_warmup_steps=N_WARMUP_EPOCHS, lr_max=LR_MAX, num_cycles=0.50, num_training_steps = N_EPOCHS)
