@@ -88,3 +88,26 @@ All of the models were similar to the example model I trained in bullet 4, with 
 I know that the model's names do not follow the same convention and can be a bit confusing, and I am sorry about that.  
 Note: to infer new data, all you need to do is to provide the new data in the same format as the given test.csv and link to the new csv file in block 41, in the line:
 test_df = pl.read_csv('/kaggle/input/leap-atmospheric-physics-ai-climsim/test.csv'
+
+# Summary/write-up
+## Context section
+[Business context](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim).  
+[Data context](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/data).  
+## 1. Overview of the Approach  
+### 1.1. model
+In one word, squeeseformer. This would not surprise anyone that followed some of the more similar competitions on Kaggle in the last year. I used the same modified squeeseformers block that I saw in the [2nd solution to Ribonanza](https://github.com/hoyso48/Stanford---Ribonanza-RNA-Folding-2nd-place-solution) by hoyso48. The only changers I remember doing is that I deleted the first LayerNorm in the 1Dconv block and addad an ECA layer. My Tensorflow im plementation was guided by hoyso48 pyTorch implementation, so once again I give him my thanks.  
+I used 12 blocks models, with dimensions of 256/384/512. Before the squeeseformer blocks I have a linear dense layer followed by batchNorm as encoder from the input data to the model dimensions, and after the squeeseformer blocks I have a prediction head of swish dense followed by GLUMlp block (swiGLU followed by linear dense), both with head dimensions of 1024/2048, depend on thre model. For more details check my code. At first I used droput layers, wich help greatly what the training data is a the order of 1M samples. However, after I saw comments in the forum about dropout being unnecesssary, I experimented again when I scaled up to ~40M-80M sam0ples and it was indeed unnecessary. Since removing it allow for much faster training, I also chose to drop the dropout althpgather. Scheduler was half-cosine decay, AdamW, max LR 1e-3, and weight decay = 4*LR.
+### 1.2. Loss  
+I once read that the most important part of a DL model is the loss function. I was a bit sceptic then- sure it is important, but it's not exactly complicateed to choose the appropriate loss, rght? Say, if our metric is R-squared, the best loss will obviously be...MSE?
+#### 1.2.1. Use MAE  
+It perform better than MSE in avery way- it converge faster, is converge better, and is more stable. If I need to choose one 'secret' of this competition for high score, aside from the notorius leaks of course, it is this.
+#### 1.2.2. Auxiliary loss  
+We had expicit timespace data for the train set, but not for the test set. Ausxiliary loss is a common practice in such cases. I used mae on the normalized latitude/longitude, and on the sin/cos on the day/year cycles (if it is unclear, please look at my code).
+A side not on the auxiliary loss- some people speculated, in the last week of the competition, that using explicit timespace data , even that of the training set, is considered a forbidden leak. So, first, such a use was [confirmed by the host to be legit](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/519772#2919233), as long as there is no 'hacking' of the test set (which can be dione by using the auxiliary predictions to pseudo-label the test set- a thing I did not did). Second, in the last week I trained several models without auxiliary spacetime loss, and my no-spacetime ensemble of 6 models got 0.79355/0.79092. So I win anyway, spacetie is not necessary and maybe is not even helpful (since my winning ensemble, while with a slightly better score, is also 13 models).  
+#### 1.3.3. Confidense head  
+The [3rd place solution in Ribonanza](https://www.kaggle.com/competitions/stanford-ribonanza-rna-folding/discussion/460403) got a supspiciously good score for a certain model. I won't get into details why it was suspicious, you will need to know Ribonanza for the context. In any case, this suspicious model had two special things going for it- a strange architecture and a confidense head. I still need to experiment more with said strange architecture, but for the confidense head it was easy to try in this competition, and it was surprisingly effective. The idea is simple- I try to predict also the loss of each target. I used MAE also for the confidense predictions. I have one model I trained withhut confidense head and it got LB 0.78945/0.78631, so I think I would won also without it. Then again, a model with exactly the same spesifications, but with confidense head was my best model with LB 0.79159/0.78869. So, yea. Surprisingly effective. And yes, this second model win the 1st place in this competition by itself (0.78869 private. Although not 1st on public).
+#### 1.3.4 Masked loss  
+I masked out the targets that are zeroed in the submission of those for which we use the ptend trick (ptend_q0002_2-ptend_q0002_26).  
+For those new at LEAP- please read [this post](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484) for ptend trick context.  
+Final thoughs on the loss function: well, it is probably the most important part of a deep learning model. lol.
+
