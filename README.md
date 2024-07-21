@@ -77,3 +77,5 @@ For epoch 2, range(20, N_EPOCHS) for epoch 3 etc.
 
   checkpoint_old = tf.train.Checkpoint(model=model,optimizer=optimizer)  
   checkpoint_old.restore('/kaggle/input/leap-training-1/ckpt_folder/ckpt-1')  
+
+  For training 2, checkpoint_old.restore('/kaggle/input/leap-training-2/ckpt_folder/ckpt-1') for training 3 atc.  
