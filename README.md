@@ -73,7 +73,7 @@ LR_SCHEDULE = [lrfn(step, num_warmup_steps=N_WARMUP_EPOCHS, lr_max=LR_MAX, num_c
 
 For epoch 2, range(20, N_EPOCHS) for epoch 3 etc.  
 
-4. In block 37, load the last part checkpoints by:
+4. In block 37, load the last part checkpoints by:  
 
-  checkpoint_old = tf.train.Checkpoint(model=model,optimizer=optimizer)
-  checkpoint_old.restore('/kaggle/input/leap-training-1/ckpt_folder/ckpt-1')
+  checkpoint_old = tf.train.Checkpoint(model=model,optimizer=optimizer)  
+  checkpoint_old.restore('/kaggle/input/leap-training-1/ckpt_folder/ckpt-1')  
