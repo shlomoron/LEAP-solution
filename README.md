@@ -86,4 +86,5 @@ All of the models were similar to the example model I trained in bullet 4, with 
   13. hr-0p0-3e-nospacetime: Trained on low-res+high-res data. Three epochs. No spacetime auxiliary loss. [inference notebook](https://www.kaggle.com/code/shlomoron/leap-hr-0p0-nospacetime-3epochs-e30-inference-p). LB 0.79036/0.78780.  
 
 I know that the model's names do not follow the same convention and can be a bit confusing, and I am sorry about that.  
-
+Note: to infer new data, all you need to do is to provide the new data in the same format as the given test.csv and link to the new csv file in block 41, in the line:
+test_df = pl.read_csv('/kaggle/input/leap-atmospheric-physics-ai-climsim/test.csv'
