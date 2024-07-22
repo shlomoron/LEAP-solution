@@ -152,7 +152,7 @@ x_col_norm = tf.where(x_col_norm>cutoff, x_col_norm**0.5+cutoff-square_cutoff, x
 x_col_norm = tf.where(x_col_norm<-cutoff, -tf.math.abs(x_col_norm)**0.5-cutoff+square_cutoff, x_col_norm)
 ```
 
-#### 1.3.3 Features soft clipping 2  
+#### 1.3.5 Features soft clipping 2  
 In addition to the first soft clipping, I applied a second soft-clipping to deal with extreme values from the high-res set. This clipping was applied on all the representation, including WIND, and after the first soft clipping (1.3.3) was applied for the relevant features:  
 
 ```
@@ -163,3 +163,13 @@ x_col_norm = tf.where(x_col_norm<-cutoff_2, -tf.math.log(-x_col_norm)-cutoff_2+l
 ```
 
 cutoff_2 was chosen to be such that the soft clipping would affect only high-res data.  
+#### 1.3.6 Targets soft clipping  
+This was done only for the high-res targets, each target was soft clipped if it was too extreme compared to low-res corresponding target min/max (this differ from 1.3.4/1.3.5 in that the soft-clipping range was different for each rarget). In code:  
+
+```  
+rescale_factor = 1.1
+if x['res'] == 0:
+    y_norm = tf.where(y_norm<norm_y_min*rescale_factor, norm_y_min*rescale_factor-tf.math.log(1-y_norm+norm_y_min*rescale_factor), y_norm)
+    y_norm = tf.where(y_norm>norm_y_max*rescale_factor, norm_y_max*rescale_factor+tf.math.log(1+y_norm-norm_y_max*rescale_factor), y_norm)
+```
+
