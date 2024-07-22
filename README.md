@@ -119,9 +119,9 @@ Let me first separate between the features that are spread ove the 60 height lev
 For X_col_not, I used only one representation, which is the somple normalization (x-mean)/std. We will call it norm_1.  
 For X_col, I used three representations. The first is norm_1, the same like X_col_not, where each feature in each level is normalized with its own mean/std. i.e., for state_t, then we have (state_t_1-mean(state_t_1))/std(state_t_1), (state_t_2-mean(state_t_2))/std(state_t_2) etc. In my code, I call this representation x_col_not_norm (for x_col_not) and x_col_norm (for X_col).  
 The second representation normalize each feature by the total mean and std over all the levels. i.e., for state_t, then we have (state_t_1-mean(state_t))/std(state_t), (state_t_2-mean(state_t))/std(state_t) etc. In my code, I call this representation x_total_norm. 
-Finally, the thirs representation is:
+Finally, the thirs representation is:  
 
-'''  
+```  
 x_col_norm_log = tf.where((x_col_norm-x_col_norm_min+1)>=1, tf.math.log(x_col_norm-x_col_norm_min+1),
                                     -tf.math.log(1+1-(x_col_norm-x_col_norm_min+1)))
-'''  
+```  
