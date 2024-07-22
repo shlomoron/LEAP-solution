@@ -208,7 +208,7 @@ This is a short summary of the methods I wrote about already in depth above. Squ
 Various model architectures (pure transformer, other conv/transformer combinations, Unet, droput, smaller models, larger models, other optimizers) in short, a lot og hyper-parameters that were less optimal. Log-normalization (i.e. log(x), not my log(1+x) representation which deal with different issues). MSE, MSE/MAE varius combination, weighted loss function (check my Ribonanza solution for details), probaly other not-very-important things that I don't remember already.  
 
 ## 3. Sources
-This is me favorite part, a bit thank you for all the recources that helped me!
+This is me favorite part, a bit thank you for all the recources that helped me!  
 [Ptend trick](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484) and also [here originally](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/499896#2791290).  
 [Ribonanza 2nd solution by Hoiso48](https://github.com/hoyso48/Stanford---Ribonanza-RNA-Folding-2nd-place-solution) for Squeezeformer architecture guidance and insights.  
 [Ribonanza 3rd place solution](https://www.kaggle.com/competitions/stanford-ribonanza-rna-folding/discussion/460403) for confidence head method.  
