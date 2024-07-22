@@ -174,3 +174,27 @@ if x['res'] == 0:
     y_norm = tf.where(y_norm<norm_y_min*rescale_factor, norm_y_min*rescale_factor-tf.math.log(1-y_norm+norm_y_min*rescale_factor), y_norm)
     y_norm = tf.where(y_norm>norm_y_max*rescale_factor, norm_y_max*rescale_factor+tf.math.log(1+y_norm-norm_y_max*rescale_factor), y_norm)
 ```
+### 1.4 Post-processing  
+#### 1.4.1. Downcast and Upcast  
+A speciel care should be taken when movig between FP64 and FP32 and vice versa. My TFRecords were encoded with the original values in FP64. After I processed the data (see 1.3) the values were downcast to FP32 before I transferred them to the model. Then I upcasted the predictions to FP64, and only then I apply de-normalization in order to get the values for submission:  
+
+```
+preds = preds + mean_y.reshape(1,-1)*stds
+preds[:, np.where(stds_new == 0)] = 0
+preds = preds/np.where(stds>0, stds, 1)
+```
+
+#### 1.4.2. Mean for bad targets  
+This is very simple:  
+
+```
+metrics = np.asarray([sklearn.metrics.r2_score(val_labels[:, i], preds[:, i]) for i in range(368)])
+for i in range(len(metrics)):
+    if metrics[i]<0:
+        preds[:,i] = 0
+```
+
+In reality it was eventually unnecessary, because the only bad targets were among those zeroed out in the submission or in the ptend trick range.
+
+#### 1.4.3. Ptend trick  
+Obviously. If you are new at LEAP, look 
