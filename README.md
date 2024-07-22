@@ -112,3 +112,16 @@ I masked out the targets that are zeroed in the submission or those for which we
 For those new at LEAP- please read [this post](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484) for ptend trick context.  
 
 Final thoughts on the loss function: well, it is probably the most important part of a deep learning model. lol.  
+### 1.3. Data preparation
+#### 1.3.1 Multiple data representation
+This is a trick I learned from 1st solution [at ASLFR](https://www.kaggle.com/competitions/asl-fingerspelling/discussion/434485). Without going into too much details, the situation in ASLFR was that the data could be normalized in two different ways. I remember that I tried both ways, found out what is better and stuck with it. Then the competition ended, and guess what? The 1st place just normalized in the two possible ways, concatenated the two representations (with a few extra steps in between, read their summary for the full details) and sent it to the model.  
+Let me first separate between the features that are spread ove the 60 height level, whi9ch I call X_col, and the features that are the same for all the levels, which I call X_col_not.  
+For X_col_not, I used only one representation, which is the somple normalization (x-mean)/std. We will call it norm_1.  
+For X_col, I used three representations. The first is norm_1, the same like X_col_not, where each feature in each level is normalized with its own mean/std. i.e., for state_t, then we have (state_t_1-mean(state_t_1))/std(state_t_1), (state_t_2-mean(state_t_2))/std(state_t_2) etc. In my code, I call this representation x_col_not_norm (for x_col_not) and x_col_norm (for X_col).  
+The second representation normalize each feature by the total mean and std over all the levels. i.e., for state_t, then we have (state_t_1-mean(state_t))/std(state_t), (state_t_2-mean(state_t))/std(state_t) etc. In my code, I call this representation x_total_norm. 
+Finally, the thirs representation is:
+
+'''
+x_col_norm_log = tf.where((x_col_norm-x_col_norm_min+1)>=1, tf.math.log(x_col_norm-x_col_norm_min+1),
+                                    -tf.math.log(1+1-(x_col_norm-x_col_norm_min+1)))
+'''
