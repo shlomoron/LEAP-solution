@@ -125,7 +125,7 @@ Multiple data representations is a trick I learned from 1st solution [at ASLFR](
 First, Let me separate the features that are spread over the 60-height level, which I call X_col and the features that are the same for all the levels, which I call X_col_not.  
 For X_col_not, I used only one representation: the simple normalization (x-mean)/std.   
 For X_col, I used three representations. The first the same as X_col_not, where I normalize each feature in each level with its own mean/std. i.e., for state_t, then we have (state_t_1-mean(state_t_1))/std(state_t_1), (state_t_2-mean(state_t_2))/std(state_t_2) etc. In my code, I call this representation x_col_not_norm (for x_col_not) and x_col_norm (for X_col).  
-The second representation normalizes each feature by the total mean and std over all the levels. For state_t, we have (state_t_1-mean (state_t))/std (state_t), (state_t_2-mean (state_t))/std (state_t), etc. In my code, I call this representation x_total_norm.  
+The second representation normalizes each feature by the total mean and std over all the levels. For state_t, we have (state_t_1-mean(state_t))/std(state_t), (state_t_2-mean(state_t))/std(state_t), etc. In my code, I call this representation x_total_norm.  
 Finally, the third representation is:  
 
 ```  
