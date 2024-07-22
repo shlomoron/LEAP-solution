@@ -181,7 +181,7 @@ if x['res'] == 0:
 ```
 ### 1.4 Post-processing  
 #### 1.4.1. Downcast and Upcast  
-A speciel care should be taken when movig between FP64 and FP32 and vice versa. My TFRecords were encoded with the original values in FP64. After I processed the data (see 1.3) the values were downcast to FP32 before I transferred them to the model. Then I upcasted the predictions to FP64, and only then I apply de-normalization in order to get the values for submission:  
+Special care should be taken when moving between FP64 and FP32. I encoded my TFRecords with the original values in FP64. After I processed the data (see 1.3), the values were downcast to FP32 before transferring them to the model. Then I upcasted the predictions to FP64, and only then did I apply de-normalization to get the values for submission:  
 
 ```
 preds = preds + mean_y.reshape(1,-1)*stds
@@ -199,27 +199,27 @@ for i in range(len(metrics)):
         preds[:,i] = 0
 ```
 
-In reality it was eventually unnecessary, because the only bad targets were among those zeroed out in the submission or in the ptend trick range.
+In reality, it was eventually unnecessary because the only bad targets were those zeroed out in the submission or in the ptend trick range (see next bullet, 1.4.3).
 
 #### 1.4.3. Ptend trick  
 Obviously. If you are new at LEAP, look [here for details](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484).  
 
 ## 2. Details of the submission  
 ### 2.1 Ensembling  
-My winning ensemble included 13 models, each a bit different (see full details in my github, 'The steps to reproduce my solution' bullet 5). The best model (11) was LB 0.79159/0.78869, the worst (2) was LB 0.78795/0.78388. Both were best/worst both ob public and on private LB. The full ensemble was LB 0.79410/0.79123. In addition, my low-res-data only ensemble of 5 models have LB 0.79299/0.78951, and my no-spacetime-auxilliary-loss ensemble of 6 models have 0.79355/0.79092. When you read my solution, you maybe tried to find out the 'secret sauce' that got me the 1st place, but it really was the combinations that made the difference. Every single technuqe that I used, I think I could still get to 1st place without it.  
+My winning ensemble included 13 models, each a bit different (see full details in my GitHub, 'The steps to reproduce my solution' bullet 5). The best model (11) was LB 0.79159/0.78869, and the worst (2) was LB 0.78795/0.78388. Both were best/worst both in public and private LB. The full ensemble was LB 0.79410/0.79123. In addition, my low-res-data-only ensemble of 5 models has LB 0.79299/0.78951, and my no-spacetime-auxilliary-loss ensemble of 6 models has 0.79355/0.79092. When you read my solution, you may have tried to find out the 'secret sauce' that got me the 1st place, but it really was the combinations that made the difference. Every single technique that I used, I think I could still get to 1st place without it.  
 ### 2.2 The helpful techniques
-This is a short summary of the methods I wrote about already in depth above. Squeeseformer, wide GLUMlp prediction head, no dropout, MAE, auxiliary timespace loss, confidence head, masked loss, multiple data representation, high-res data, features and targets soft-clipping,careful downcast/upcast.
+This is a short summary of the methods I wrote about in-depth above: Squeeseformer, wide GLUMlp prediction head, no dropout, MAE, auxiliary spacetime loss, confidence head, masked loss, multiple data representation, high-res data, features and targets soft-clipping careful downcast/upcast.
 ### 2.3 What didn't work  
-Various model architectures (pure transformer, other conv/transformer combinations, Unet, droput, smaller models, larger models, other optimizers) in short, a lot og hyper-parameters that were less optimal. Log-normalization (i.e. log(x), not my log(1+x) representation which deal with different issues). MSE, MSE/MAE varius combination, weighted loss function (check my Ribonanza solution for details), probaly other not-very-important things that I don't remember already.  
+Various model architectures (pure transformer, other 1Dconv/transformer combinations, Unet, dropout, smaller models, larger models, other optimizers), in short, many less optimal hyper-parameters. Log-normalization (i.e., log(x), not my log(1+x) representation which deals with different issues). MSE, MSE/MAE various combinations, weighted loss function (check my Ribonanza solution for details), and probably other not-very-important things that I don't remember already.  
 ### 2.4 Hardware
-I trained on Kaggle and Colab TPU, and inferred on Kaggle P100 gpu. Compute-wise, my experiments and training are at least 200 bucks in Colab compute units, and probably less than 300 bucks in total. If it sounds like a lot compared to your 'free' personal machine, please consider the electicity cost of using an RTX4090...
+I trained on Kaggle and Colab TPU and inferred on Kaggle P100 GPU. Compute-wise, my experiments and training cost at least 200 bucks in Colab compute units and probably less than 300 bucks in total. If it sounds like a lot compared to your 'free' personal machine, please consider the electricity cost of using an RTX4090...
 
 ## 3. Sources
-This is me favorite part, a bit thank you for all the recources that helped me!  
+This is my favorite part. Thank you for all the resources that have helped me!  
 [Ptend trick](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484) and also [here originally](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/499896#2791290).  
 [Ribonanza 2nd solution by Hoiso48](https://github.com/hoyso48/Stanford---Ribonanza-RNA-Folding-2nd-place-solution) for Squeezeformer architecture guidance and insights.  
 [Ribonanza 3rd place solution](https://www.kaggle.com/competitions/stanford-ribonanza-rna-folding/discussion/460403) for confidence head method.  
-[ASLFR 1st solution](https://www.kaggle.com/competitions/asl-fingerspelling/discussion/434485) for multiple data representation method.  
+[ASLFR 1st solution](https://www.kaggle.com/competitions/asl-fingerspelling/discussion/434485) for the multiple data representation method.  
 [Dropout is unnecessary](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/514020#2884414) and [also here](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/514020#2885043).  
 
 In addition, I used the low-res and high-res data [from HF](https://huggingface.co/LEAP).  
