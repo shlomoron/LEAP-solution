@@ -197,4 +197,22 @@ for i in range(len(metrics)):
 In reality it was eventually unnecessary, because the only bad targets were among those zeroed out in the submission or in the ptend trick range.
 
 #### 1.4.3. Ptend trick  
-Obviously. If you are new at LEAP, look [here for details](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484).
+Obviously. If you are new at LEAP, look [here for details](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484).  
+
+## 2. Details of the submission  
+### 2.1 Ensembling  
+My winning ensemble included 13 models, each a bit different (see full details in my github, 'The steps to reproduce my solution' bullet 5). The best model (11) was LB 0.79159/0.78869, the worst (2) was LB 0.78795/0.78388. Both were best/worst both ob public and on private LB. The full ensemble was LB 0.79410/0.79123. In addition, my low-res-data only ensemble of 5 models have LB 0.79299/0.78951, and my no-spacetime-auxilliary-loss ensemble of 6 models have 0.79355/0.79092. When you read my solution, you maybe tried to find out the 'secret sauce' that got me the 1st place, but it really was the combinations that made the difference. Every single technuqe that I used, I think I could still get to 1st place without it.  
+### 2.2 The helpful techniques
+This is a short summary of the methods I wrote about already in depth above. Squeeseformer, wide GLUMlp prediction head, no dropout, MAE, auxiliary timespace loss, confidence head, masked loss, multiple data representation, high-res data, features and targets soft-clipping,careful downcast/upcast.
+### 2.3 What didn't work  
+Various model architectures (pure transformer, other conv/transformer combinations, Unet, droput, smaller models, larger models, other optimizers) in short, a lot og hyper-parameters that were less optimal. Log-normalization (i.e. log(x), not my log(1+x) representation which deal with different issues). MSE, MSE/MAE varius combination, weighted loss function (check my Ribonanza solution for details), probaly other not-very-important things that I don't remember already.  
+
+## 3. Sources
+This is me favorite part, a bit thank you for all the recources that helped me!
+[Ptend trick](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484) and also [here originally](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/499896#2791290).  
+[Ribonanza 2nd solution by Hoiso48](https://github.com/hoyso48/Stanford---Ribonanza-RNA-Folding-2nd-place-solution) for Squeezeformer architecture guidance and insights.  
+[Ribonanza 3rd place solution](https://www.kaggle.com/competitions/stanford-ribonanza-rna-folding/discussion/460403) for confidence head method.  
+[ASLFR 1st solution](https://www.kaggle.com/competitions/asl-fingerspelling/discussion/434485) for multiple data representation method.  
+[Dropout is unnecessary](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/514020#2884414) and [also here](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/514020#2885043).  
+
+In addition, I used the low-res and high-res data [from HF](https://huggingface.co/LEAP).  
