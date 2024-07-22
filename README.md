@@ -215,7 +215,7 @@ Various model architectures (pure transformer, other 1Dconv/transformer combinat
 I trained on Kaggle and Colab TPU and inferred on Kaggle P100 GPU. Compute-wise, my experiments and training cost at least 200 bucks in Colab compute units and probably less than 300 bucks in total. If it sounds like a lot compared to your 'free' personal machine, please consider the electricity cost of using an RTX4090...
 
 ## 3. Sources
-This is my favorite part. Thank you for all the resources that have helped me!  
+This is my favorite part. Thank you all the resources that have helped me!  
 [Ptend trick](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484) and also [here originally](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/499896#2791290).  
 [Ribonanza 2nd solution by Hoiso48](https://github.com/hoyso48/Stanford---Ribonanza-RNA-Folding-2nd-place-solution) for Squeezeformer architecture guidance and insights.  
 [Ribonanza 3rd place solution](https://www.kaggle.com/competitions/stanford-ribonanza-rna-folding/discussion/460403) for confidence head method.  
