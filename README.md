@@ -90,6 +90,9 @@ Note: to infer new data, all you need to do is to provide the new data in the sa
 test_df = pl.read_csv('/kaggle/input/leap-atmospheric-physics-ai-climsim/test.csv'
 
 # Summary/write-up
+This competition was an amazing experience and wonderfull sandbox to test ideas and experiments with varius technuqes and architectures in-depth. Thanks to Kaggle for this amazing platform, to colab for providing me cheap TPU to train on, to Google as the owner of both Kaggle and Colab and also for providing us Tensorflow. When I think about it, I trained on TPU (google) on tensorflow framework (google) on Colab (google) for a competition held on Kaggle (google). It's all Google from start to end. You are amazing and I salute you.  
+Also huge thanks for the competition host for providing us this amazing competition and doing so much to keep it on track, even when facing all sort of unexpected LEAK problems.  
+And thank you the Kaggle community, and especially all the people active and helpful on the forum and in the code section, you makes the experience so much better. I love you.  
 ## Context section
 [Business context](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim).  
 [Data context](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/data).  
