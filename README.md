@@ -143,14 +143,14 @@ x_col_norm_log = tf.math.log(x_col_norm-x_col_norm_min+1)
 Why all the extra steps with the tf.cond? See, I had a problem. I calculated x_col_norm_min only with Kaggle data, and then I scaled up my code to all HF data (which have values lower than Kaggle data x_col_norm_min) but did not want to change the normalization constant because it would break the inference pipeline. Then, I would have to use different pipelines for my old and new models. Yeah, sometimes I'm a bit lazy. Proud of it. And it turned out to be an excellent choice when I included also high-res data.  
 #### 1.3.3 Wind
 $wind = \sqrt{(state_u)^2+(state_v)^2}$  
-It just made sense and I wanted to include at least one 'physically justified' thing in the model (silly me, yes). It did not really helped but also did not hurt the model, so it stayed. I used only the first normalization for WIND, with:  
+It made sense, and I wanted to include at least one 'physically justified' thing in the model (silly me, yes). It did not really help but also did not hurt the model, so it stayed. I used only the first normalization for WIND, with:  
 mean(wind) = mean(mean(state_u), mean(state_v))  
-and with:  
+And with:  
 std(wind) = sum(std(state_u), std(state_v)  
 All in all, the feature dimension is:  
 9[col_features]/*60[levels]*3[representations]+60[wind_levels]+16[not_col features] = 1696  
 #### 1.3.4 Features soft clipping 1  
-After normalization, the data has some extreme values (~±3000). This problem exists only for the first normalization. The model actually handled it easily, but I preferred to play on the safe side. So, for x_col_norm and for WIND, I applied the following soft clipping:  
+After normalization, the data has some extreme values (~±3000). This problem exists only for the first normalization. The model actually handled it easily, but I preferred to play on the safe side. So, for x_col_norm and WIND, I applied the following soft clipping:  
 
 ```  
 cutoff = 30
@@ -160,7 +160,7 @@ x_col_norm = tf.where(x_col_norm<-cutoff, -tf.math.abs(x_col_norm)**0.5-cutoff+s
 ```
 
 #### 1.3.5 Features soft clipping 2  
-In addition to the first soft clipping, I applied a second soft-clipping to deal with extreme values from the high-res set. This clipping was applied on all the representation, including WIND, and after the first soft clipping (1.3.3) was applied for the relevant features:  
+In addition to the first soft clipping, I applied a second soft clipping to deal with extreme values from the high-res set. I applied the clipping on all the representations, including WIND, and after I applied the first soft clipping (1.3.3) for the relevant features:  
 
 ```
 cutoff_2 = 86.0
@@ -169,9 +169,9 @@ x_col_norm = tf.where(x_col_norm>cutoff_2, tf.math.log(x_col_norm)+cutoff_2-log_
 x_col_norm = tf.where(x_col_norm<-cutoff_2, -tf.math.log(-x_col_norm)-cutoff_2+log_cutoff, x_col_norm)
 ```
 
-cutoff_2 was chosen to be such that the soft clipping would affect only high-res data.  
+I chose cutoff_2 so that the soft clipping would only affect high-res data.  
 #### 1.3.6 Targets soft clipping  
-This was done only for the high-res targets, each target was soft clipped if it was too extreme compared to low-res corresponding target min/max (this differ from 1.3.4/1.3.5 in that the soft-clipping range was different for each rarget). In code:  
+I did this only for the high-res targets; each target was soft-clipped if it was too extreme compared to the low-res corresponding target min/max (this differs from 1.3.4/1.3.5 in that the soft-clipping range was different for each target). In code:  
 
 ```  
 rescale_factor = 1.1
