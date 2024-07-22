@@ -207,7 +207,7 @@ This is a short summary of the methods I wrote about already in depth above. Squ
 ### 2.3 What didn't work  
 Various model architectures (pure transformer, other conv/transformer combinations, Unet, droput, smaller models, larger models, other optimizers) in short, a lot og hyper-parameters that were less optimal. Log-normalization (i.e. log(x), not my log(1+x) representation which deal with different issues). MSE, MSE/MAE varius combination, weighted loss function (check my Ribonanza solution for details), probaly other not-very-important things that I don't remember already.  
 ### 2.4 Hardware
-I trained on Kaggle and Colab TPU, and inferred on Kaggle P100 gpu. Compute-wise, my experiments and training are at least 200 bucks in Colab compute units, and probably less than 300 bucks. If it sounds like a lot compared to your 'free' personal machine, please consider the electicity cost of using an RTX4090...
+I trained on Kaggle and Colab TPU, and inferred on Kaggle P100 gpu. Compute-wise, my experiments and training are at least 200 bucks in Colab compute units, and probably less than 300 bucks in total. If it sounds like a lot compared to your 'free' personal machine, please consider the electicity cost of using an RTX4090...
 
 ## 3. Sources
 This is me favorite part, a bit thank you for all the recources that helped me!  
