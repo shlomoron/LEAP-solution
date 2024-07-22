@@ -197,4 +197,4 @@ for i in range(len(metrics)):
 In reality it was eventually unnecessary, because the only bad targets were among those zeroed out in the submission or in the ptend trick range.
 
 #### 1.4.3. Ptend trick  
-Obviously. If you are new at LEAP, look 
+Obviously. If you are new at LEAP, look [here for details](https://www.kaggle.com/competitions/leap-atmospheric-physics-ai-climsim/discussion/502484).
