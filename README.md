@@ -142,6 +142,8 @@ It just made sense and I wanted to include at least one 'physically justified' t
 mean(wind) = mean(mean(state_u), mean(state_v))  
 and with:  
 std(wind) = sum(std(state_u), std(state_v)  
+All in all, the feature dimension is: 
+9[col_features]/*60[levels]*3[representations]+60[wind_levels]+16[not_col features] = 1696  
 #### 1.3.4 Features soft clipping 1  
 After normalization, the data has some extreme values (~±3000). This problem exists only for the first normalization. The model actually handled it easily, but I preferred to play on the safe side. So, for x_col_norm and for WIND, I applied the following soft clipping:  
 
@@ -172,4 +174,3 @@ if x['res'] == 0:
     y_norm = tf.where(y_norm<norm_y_min*rescale_factor, norm_y_min*rescale_factor-tf.math.log(1-y_norm+norm_y_min*rescale_factor), y_norm)
     y_norm = tf.where(y_norm>norm_y_max*rescale_factor, norm_y_max*rescale_factor+tf.math.log(1+y_norm-norm_y_max*rescale_factor), y_norm)
 ```
-
