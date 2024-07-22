@@ -136,7 +136,7 @@ x_col_norm_log = tf.math.log(x_col_norm-x_col_norm_min+1)
 Why all the extra step with the tf.cond? See, I had a problem. I calculated x_col_norm_min only with Kaggle data, and then I scaled up my code to all HF data (which have values lower than Kaggle data x_col_norm_min) but did not wanted to change the normalization constant because it break inference pipeline, and then I would have to use a different pipelines for my old models and new  models. Yeah sometimes I'm a bit lasy. Proud of it. And it turned out to be an excellent chpice when I included also high-res data.  
 #### 1.3.2 Wind
 $wind = \sqrt{(state_u)^2+(state_v)^2}$  
-It just made sense and I wanted to include at least ont 'physically justified' thing in the model. It did not really helped but also did not hurt the model, so it stayed. I used only the first normalization for WIND, with:  
+It just made sense and I wanted to include at least one 'physically justified' thing in the model (silly me, yes). It did not really helped but also did not hurt the model, so it stayed. I used only the first normalization for WIND, with:  
 mean(wind) = mean(mean(state_u), mean(state_v))  
 and with:  
 std(wind) = sum(std(state_u), std(state_v)  
