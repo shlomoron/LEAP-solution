@@ -119,7 +119,7 @@ Let me first separate between the features that are spread ove the 60 height lev
 For X_col_not, I used only one representation, which is the somple normalization (x-mean)/std.   
 For X_col, I used three representations. The first is norm_1, the same like X_col_not, where each feature in each level is normalized with its own mean/std. i.e., for state_t, then we have (state_t_1-mean(state_t_1))/std(state_t_1), (state_t_2-mean(state_t_2))/std(state_t_2) etc. In my code, I call this representation x_col_not_norm (for x_col_not) and x_col_norm (for X_col).  
 The second representation normalize each feature by the total mean and std over all the levels. i.e., for state_t, then we have (state_t_1-mean(state_t))/std(state_t), (state_t_2-mean(state_t))/std(state_t) etc. In my code, I call this representation x_total_norm.  
-Finally, the thirs representation is:  
+Finally, the third representation is:  
 
 ```  
 x_col_norm_log = tf.where((x_col_norm-x_col_norm_min+1)>=1, tf.math.log(x_col_norm-x_col_norm_min+1),
@@ -134,3 +134,5 @@ x_col_norm_log = tf.math.log(x_col_norm-x_col_norm_min+1)
 ```
 
 Why all the extra step with the tf.cond? See, I had a problem. I calculated x_col_norm_min only with Kaggle data, and then I scaled up my code to all HF data (which have values lower than Kaggle data x_col_norm_min) but did not wanted to change the normalization constant because it break inference pipeline, and then I would have to use a different pipelines for my old models and new  models. Yeah sometimes I'm a bit lasy. Proud of it. And it turned out to be an excellent chpice when I included also high-res data.  
+#### 1.3.2 Wind
+$wind = (state_u^2+state_v^2)^0.5$
