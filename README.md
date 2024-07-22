@@ -121,11 +121,11 @@ Final thoughts on the loss function: well, it is probably the most important par
 #### 1.3.1 High-res data  
 You may have noticed already that I used high-res data. Yes, it helps. Although I would have won without it- my only low-res data ensemble of five models got LB 0.79299/0.78951. But high-res definitely helped, although it sometimes requires a special soft-clipping treatment, as you will see. Also, training with high-res is less stable. Hence, I usually used larger batch sizes (1024/2048 compared to 512 for low-res only models). I blended high-res data with a ratio of 2:1 low: high. Lower than that, the performance is weaker; higher than that, the gains are small compared to the extra training time required.    
 #### 1.3.2 Multiple data representation
-This is a trick I learned from 1st solution [at ASLFR](https://www.kaggle.com/competitions/asl-fingerspelling/discussion/434485). Without going into too much details, the situation in ASLFR was that the data could be normalized in two different ways. I remember that I tried both ways, found out what is better and stuck with it. Then the competition ended, and guess what? The 1st place just normalized in the two possible ways, concatenated the two representations (with a few extra steps in between, read their summary for the full details) and sent it to the model.  
-Let me first separate between the features that are spread ove the 60 height level, whi9ch I call X_col, and the features that are the same for all the levels, which I call X_col_not.  
-For X_col_not, I used only one representation, which is the somple normalization (x-mean)/std.   
-For X_col, I used three representations. The first is norm_1, the same like X_col_not, where each feature in each level is normalized with its own mean/std. i.e., for state_t, then we have (state_t_1-mean(state_t_1))/std(state_t_1), (state_t_2-mean(state_t_2))/std(state_t_2) etc. In my code, I call this representation x_col_not_norm (for x_col_not) and x_col_norm (for X_col).  
-The second representation normalize each feature by the total mean and std over all the levels. i.e., for state_t, then we have (state_t_1-mean(state_t))/std(state_t), (state_t_2-mean(state_t))/std(state_t) etc. In my code, I call this representation x_total_norm.  
+Multiple data representations is a trick I learned from 1st solution [at ASLFR](https://www.kaggle.com/competitions/asl-fingerspelling/discussion/434485). Without going into too much detail, the situation in ASLFR was that the data could be normalized in two different ways. I remember trying both ways, finding out what is better and sticking with it. Then the competition ended, and guess what? The 1st place normalized in the two possible ways concatenated the two representations (with a few extra steps in between; read their summary for the full details) and sent it to the model.  
+First, Let me separate the features that are spread over the 60-height level, which I call X_col and the features that are the same for all the levels, which I call X_col_not.  
+For X_col_not, I used only one representation: the simple normalization (x-mean)/std.   
+For X_col, I used three representations. The first is norm_1, the same as X_col_not, where I normalize each feature in each level with its own mean/std. i.e., for state_t, then we have (state_t_1-mean(state_t_1))/std(state_t_1), (state_t_2-mean(state_t_2))/std(state_t_2) etc. In my code, I call this representation x_col_not_norm (for x_col_not) and x_col_norm (for X_col).  
+The second representation normalizes each feature by the total mean and std over all the levels. For state_t, we have (state_t_1-mean (state_t))/std (state_t), (state_t_2-mean (state_t))/std (state_t), etc. In my code, I call this representation x_total_norm.  
 Finally, the third representation is:  
 
 ```  
@@ -133,14 +133,14 @@ x_col_norm_log = tf.where((x_col_norm-x_col_norm_min+1)>=1, tf.math.log(x_col_no
                                     -tf.math.log(1+1-(x_col_norm-x_col_norm_min+1)))
 ```
 
-Which is the kisd of thing that trying to explain with word would never be as clear as just looking at the code.  
-After you looked at the code and understood it, you maybe wonder why not use just:  
+This is the kind of thing that trying to explain with words would never be as clear as just looking at the code.  
+After you looked at the code and understood it, you may wonder why not use:  
 
 ```  
 x_col_norm_log = tf.math.log(x_col_norm-x_col_norm_min+1)
 ```
 
-Why all the extra step with the tf.cond? See, I had a problem. I calculated x_col_norm_min only with Kaggle data, and then I scaled up my code to all HF data (which have values lower than Kaggle data x_col_norm_min) but did not wanted to change the normalization constant because it break inference pipeline, and then I would have to use a different pipelines for my old models and new  models. Yeah sometimes I'm a bit lasy. Proud of it. And it turned out to be an excellent chpice when I included also high-res data.  
+Why all the extra steps with the tf.cond? See, I had a problem. I calculated x_col_norm_min only with Kaggle data, and then I scaled up my code to all HF data (which have values lower than Kaggle data x_col_norm_min) but did not want to change the normalization constant because it would break the inference pipeline. Then, I would have to use different pipelines for my old and new models. Yeah, sometimes I'm a bit lazy. Proud of it. And it turned out to be an excellent choice when I included also high-res data.  
 #### 1.3.3 Wind
 $wind = \sqrt{(state_u)^2+(state_v)^2}$  
 It just made sense and I wanted to include at least one 'physically justified' thing in the model (silly me, yes). It did not really helped but also did not hurt the model, so it stayed. I used only the first normalization for WIND, with:  
