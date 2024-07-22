@@ -113,9 +113,9 @@ For those new at LEAP- please read [this post](https://www.kaggle.com/competitio
 
 Final thoughts on the loss function: well, it is probably the most important part of a deep learning model. lol.  
 ### 1.3. Data preparation
-### 1.3.1 High-res data  
-You probably have noticed already that I used high-res data. Yes, it help. Although I would have won also without it- my only low-res data ensemble of five models got LB 0.79299/0.78951. But high-res definitely helped, although it somtimes require a spaciel soft-clipping tratment as you will see. Also, training with high-res is a bit less stasble, hence I usually used larger batch sizes (1024/2048 compared to 512 for low-res only models).  
-#### 1.3.1 Multiple data representation
+#### 1.3.1 High-res data  
+You probably have noticed already that I used high-res data. Yes, it help. Although I would have won also without it- my only low-res data ensemble of five models got LB 0.79299/0.78951. But high-res definitely helped, although it somtimes require a spaciel soft-clipping tratment as you will see. Also, training with high-res is a bit less stasble, hence I usually used larger batch sizes (1024/2048 compared to 512 for low-res only models). I blended high res data with ratio of 2:1 low:high. Lower than that the performance is weaker, higher than that the gains are small compared to extra training time required.  
+#### 1.3.2 Multiple data representation
 This is a trick I learned from 1st solution [at ASLFR](https://www.kaggle.com/competitions/asl-fingerspelling/discussion/434485). Without going into too much details, the situation in ASLFR was that the data could be normalized in two different ways. I remember that I tried both ways, found out what is better and stuck with it. Then the competition ended, and guess what? The 1st place just normalized in the two possible ways, concatenated the two representations (with a few extra steps in between, read their summary for the full details) and sent it to the model.  
 Let me first separate between the features that are spread ove the 60 height level, whi9ch I call X_col, and the features that are the same for all the levels, which I call X_col_not.  
 For X_col_not, I used only one representation, which is the somple normalization (x-mean)/std.   
@@ -136,13 +136,13 @@ x_col_norm_log = tf.math.log(x_col_norm-x_col_norm_min+1)
 ```
 
 Why all the extra step with the tf.cond? See, I had a problem. I calculated x_col_norm_min only with Kaggle data, and then I scaled up my code to all HF data (which have values lower than Kaggle data x_col_norm_min) but did not wanted to change the normalization constant because it break inference pipeline, and then I would have to use a different pipelines for my old models and new  models. Yeah sometimes I'm a bit lasy. Proud of it. And it turned out to be an excellent chpice when I included also high-res data.  
-#### 1.3.2 Wind
+#### 1.3.3 Wind
 $wind = \sqrt{(state_u)^2+(state_v)^2}$  
 It just made sense and I wanted to include at least one 'physically justified' thing in the model (silly me, yes). It did not really helped but also did not hurt the model, so it stayed. I used only the first normalization for WIND, with:  
 mean(wind) = mean(mean(state_u), mean(state_v))  
 and with:  
 std(wind) = sum(std(state_u), std(state_v)  
-#### 1.3.2 Features soft clipping 1  
+#### 1.3.4 Features soft clipping 1  
 After normalization, the data has some extreme values (~±3000). This problem exists only for the first normalization. The model actually handled it easily, but I preferred to play on the safe side. So, for x_col_norm and for WIND, I applied the following soft clipping:  
 
 ```  
@@ -153,7 +153,7 @@ x_col_norm = tf.where(x_col_norm<-cutoff, -tf.math.abs(x_col_norm)**0.5-cutoff+s
 ```
 
 #### 1.3.3 Features soft clipping 2  
-In addition to the first soft clipping, I applied a second soft-clipping to deal with extreme values from the high-res set. This clipping was applied on all the representation, including WIND, and after the first soft clipping (1.3.2) was applied for the relevant features:  
+In addition to the first soft clipping, I applied a second soft-clipping to deal with extreme values from the high-res set. This clipping was applied on all the representation, including WIND, and after the first soft clipping (1.3.3) was applied for the relevant features:  
 
 ```
 cutoff_2 = 86.0
