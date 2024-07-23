@@ -87,7 +87,7 @@ All of the models were similar to the example model I trained in bullet 4, with 
 
 I know that the model's names do not follow the same convention and can be a bit confusing, and I am sorry about that.  
 Note: to infer new data, all you need to do is to provide the new data in the same format as the given test.csv and link to the new csv file in block 41, in the line:
-test_df = pl.read_csv('/kaggle/input/leap-atmospheric-physics-ai-climsim/test.csv'
+test_df = pl.read_csv('/kaggle/input/leap-atmospheric-physics-ai-climsim/test.csv')
 
 # Summary/write-up
 This competition was an amazing experience and a wonderful sandbox to test ideas and experiments with various techniques and architectures in-depth. Thanks to Kaggle for this fantastic platform, to colab for providing me cheap TPU to train on, to Google as the owner of both Kaggle and Colab and for providing us with Tensorflow. When I think about it, I trained on TPU (google) on tensorflow framework (google) on Colab (google) for a competition held on Kaggle (google). It's all Google from start to end. You are amazing, and I salute you.  
