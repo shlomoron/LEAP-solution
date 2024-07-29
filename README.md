@@ -183,7 +183,7 @@ if x['res'] == 0:
 ```
 ### 1.4 Post-processing  
 #### 1.4.1. Downcast and Upcast  
-Special care should be taken when moving between FP64 and FP32. I encoded my TFRecords with the original values in FP64. After I processed the data (see 1.3), the values were downcast to FP32 before transferring them to the model. Then I upcasted the predictions to FP64, and only then did I apply de-normalization to get the values for submission:  
+Special care should be taken when moving between FP64 and FP32. I encoded my TFRecords with the original values in FP64. After I processed the data (see 1.3. Except for 1.3.5 which happened after the casting with no particular reason), the values were downcast to FP32 before transferring them to the model. Then I upcasted the predictions to FP64, and only then did I apply de-normalization to get the values for submission:  
 
 ```
 preds = preds + mean_y.reshape(1,-1)*stds
