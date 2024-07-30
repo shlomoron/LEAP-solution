@@ -12,7 +12,7 @@ For example, for index=5, this line will read:
 You can access all the notebooks by changing the notebook index in the link (the number at the end of the link).  
 Please note that the notebook index does not correspond to the index in the above line for shuffling reasons. For example, notebook #2 uses the index of 16.  
 #### 1.2. Encode the downloaded data to TFRecords.  
-See the notebook [here](https://www.kaggle.com/code/shlomoron/leap-data-to-tfrecs-1-s). There is a limit to daily public notebook publishing, so not all of them are public yet. In any case, they are all copies of the first one.  
+See the notebook [here](https://www.kaggle.com/code/shlomoron/leap-data-to-tfrecs-1-s).  
 #### 1.3. Create kaggle datasets of TFRecords by combining the output of the notebooks from 1.2.  
 I created each dataset from 4 notebooks for eight datasets in total. See dataset creation notebook [here](https://www.kaggle.com/code/shlomoron/leap-tfrec-combined-1-s-public). This time, I only give a copy (not the original notebook) since this notebook prints username and Kaggle key; the latter should be kept private. In any case, the dataset creation notebook cannot be directly linked to the dataset (if I want, I can delete the dataset and create a new one with the same name from another, different notebook) so if you want to make sure I did not hide any leak in the dataset; you will have to check it manually or recreate it with this notebook (you will need to provide your own 'kaggle.json' with username and key and run eight copies of this notebook, with each copy combining four notebooks from 1.2). The dataset is public; you can see it [here](https://www.kaggle.com/datasets/shlomoron/leap-tfrecs-combined-1-s-ds).  
 ### For the high-resolution dataset:  
